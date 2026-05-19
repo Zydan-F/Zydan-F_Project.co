@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>Dashboard</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<div class="sidebar">
+
+  <div class="logo-header">
+
+    <img src="https://www.smkn1suboh.sch.id/resources/images/logo.png">
+
+    <div>
+      <h1>Perpustakaan Digital</h1>
+      <p>SMKN 1 Suboh</p>
+    </div>
+
+  </div>
+
+  <div class="user-profile">
+
+    <img
+      src="https://i.pravatar.cc/150?img=12"
+      class="profile-img"
+    >
+
+    <h3 id="usernameUser">
+      User
+    </h3>
+
+  </div>
+
+  <div class="menu">
+
+    <a href="index.html">Dashboard</a>
+
+    <a href="buku.html">Daftar Buku</a>
+
+    <a href="lokasi.html">Lokasi</a>
+
+    <a href="credit.html">Credit</a>
+
+    <a href="admin.html">Admin</a>
+
+    <a href="#" id="logoutBtn">
+      Logout
+    </a>
+
+  </div>
+
+</div>
+
+<div class="content">
+
+  <h2>Dashboard</h2>
+
+  <p>
+    Selamat datang di
+    Perpustakaan Digital
+    SMKN 1 Suboh
+  </p>
+
+</div>
+
+<script type="module">
+
+import {
+  auth,
+  onAuthStateChanged,
+  signOut
+}
+from "./firebase.js";
+
+onAuthStateChanged(auth,(user)=>{
+
+  if(user){
+
+    document.getElementById(
+      "usernameUser"
+    ).innerText = user.email;
+
+  }else{
+
+    window.location.href =
+    "login.html";
+
+  }
+
+});
+
+document.getElementById(
+  "logoutBtn"
+).addEventListener("click",()=>{
+
+  signOut(auth);
+
+});
+
+</script>
+
+</body>
+</html>
