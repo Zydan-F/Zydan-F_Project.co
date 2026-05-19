@@ -15,22 +15,26 @@ from
 
 const firebaseConfig = {
 
-  apiKey: "API_KEY",
+  apiKey:
+  "AIzaSyAA5mzO0fzc0bMr9wnbBHm1f2nax4XrwQ4",
 
   authDomain:
-  "PROJECT.firebaseapp.com",
+  "perpustakaan-digital-smakins.firebaseapp.com",
 
   projectId:
-  "PROJECT_ID",
+  "perpustakaan-digital-smakins",
 
   storageBucket:
-  "PROJECT.appspot.com",
+  "perpustakaan-digital-smakins.firebasestorage.app",
 
   messagingSenderId:
-  "XXXX",
+  "203203851480",
 
   appId:
-  "XXXX"
+  "1:203203851480:web:8a0b63e9dce12819db53ad",
+
+  measurementId:
+  "G-Y6N0ZJRM20"
 
 };
 
