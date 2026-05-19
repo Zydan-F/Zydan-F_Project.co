@@ -1,62 +1,69 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8">
-  <title>Admin Panel</title>
-  <link rel="stylesheet" href="style.css">
+
+<meta charset="UTF-8">
+
+<title>Admin Panel</title>
+
+<link rel="stylesheet"
+href="style.css">
+
 </head>
 
 <body>
 
 <div class="sidebar">
 
-  <h2>Admin Panel</h2>
+<h2>Admin Panel</h2>
 
-  <div class="menu">
+<div class="menu">
 
-    <a href="index.html">
-      Dashboard
-    </a>
+<a href="index.html">
+Dashboard
+</a>
 
-    <a href="buku.html">
-      Buku
-    </a>
+<a href="buku.html">
+Buku
+</a>
 
-  </div>
+</div>
 
 </div>
 
 <div class="content">
 
-  <h2>Tambah Buku</h2>
+<h2>Tambah Buku</h2>
 
-  <input
-    type="text"
-    id="judul"
-    placeholder="Judul Buku"
-  >
+<input
+type="text"
+id="judul"
+placeholder="Judul Buku"
+>
 
-  <input
-    type="text"
-    id="kategori"
-    placeholder="Kategori"
-  >
+<input
+type="text"
+id="kategori"
+placeholder="Kategori"
+>
 
-  <input
-    type="text"
-    id="gambar"
-    placeholder="Link Gambar"
-  >
+<input
+type="text"
+id="gambar"
+placeholder="Link Gambar"
+>
 
-  <input
-    type="text"
-    id="link"
-    placeholder="Link Buku"
-  >
+<input
+type="text"
+id="link"
+placeholder="Link Buku"
+>
 
-  <button onclick="tambahBuku()">
-    Tambah Buku
-  </button>
+<button onclick="tambahBuku()">
+
+Tambah Buku
+
+</button>
 
 </div>
 
@@ -64,42 +71,44 @@
 
 function tambahBuku(){
 
-  const data = {
+const data = {
 
-    judul:
-    document.getElementById(
-      "judul"
-    ).value,
+judul:
+document.getElementById(
+"judul"
+).value,
 
-    kategori:
-    document.getElementById(
-      "kategori"
-    ).value,
+kategori:
+document.getElementById(
+"kategori"
+).value,
 
-    gambar:
-    document.getElementById(
-      "gambar"
-    ).value,
+gambar:
+document.getElementById(
+"gambar"
+).value,
 
-    link:
-    document.getElementById(
-      "link"
-    ).value
+link:
+document.getElementById(
+"link"
+).value
 
-  };
+};
 
-  let buku = JSON.parse(
-    localStorage.getItem("buku")
-  ) || [];
+let buku = JSON.parse(
+localStorage.getItem("buku")
+) || [];
 
-  buku.push(data);
+buku.push(data);
 
-  localStorage.setItem(
-    "buku",
-    JSON.stringify(buku)
-  );
+localStorage.setItem(
+"buku",
+JSON.stringify(buku)
+);
 
-  alert("Buku berhasil ditambahkan");
+alert(
+"Buku berhasil ditambahkan"
+);
 
 }
 
