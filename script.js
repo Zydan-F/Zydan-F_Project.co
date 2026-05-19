@@ -1,105 +1,116 @@
 let buku = JSON.parse(
-localStorage.getItem("buku")) || [
+localStorage.getItem("buku")
+) || [
 
 {
-  judul:"Koala Kumal",
-  kategori:"Novel",
+judul:"Koala Kumal",
+kategori:"Novel",
 
-  gambar:"https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1417492522i/23645640.jpg",
+gambar:
+"https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1417492522i/23645640.jpg",
 
-  link:"https://www.goodreads.com/book/show/23645640-koala-kumal"
+link:
+"https://www.goodreads.com/book/show/23645640-koala-kumal"
 },
 
 {
-  judul:"Sabar Lagi Bikin",
-  kategori:"Indie",
+judul:"Sabar Lagi Bikin",
+kategori:"Indie",
 
-  gambar:"https://via.placeholder.com/200x300",
+gambar:
+"https://via.placeholder.com/200x300",
 
-  link:"#"
+link:"#"
 }
 
 ];
 
 function tampilBuku(data){
 
-  const list =
-  document.getElementById("listBuku");
+const list =
+document.getElementById(
+"listBuku"
+);
 
-  if(!list) return;
+if(!list) return;
 
-  list.innerHTML = "";
+list.innerHTML = "";
 
-  data.forEach((b)=>{
+data.forEach((b)=>{
 
-    list.innerHTML += `
+list.innerHTML += `
 
-    <div
-      class="book-card"
-      onclick="bukaLink('${b.link}')"
-    >
+<div
+class="book-card"
+onclick="bukaLink('${b.link}')"
+>
 
-      <img src="${b.gambar}">
+<img src="${b.gambar}">
 
-      <div class="book-info">
+<div class="book-info">
 
-        <h3>${b.judul}</h3>
+<h3>${b.judul}</h3>
 
-        <p>${b.kategori}</p>
+<p>${b.kategori}</p>
 
-      </div>
+</div>
 
-    </div>
+</div>
 
-    `;
+`;
 
-  });
+});
 
 }
 
 function bukaLink(url){
 
-  window.open(url,"_blank");
+window.open(url,"_blank");
 
 }
 
 function filterBuku(){
 
-  const filter =
-  document.getElementById(
-    "filter"
-  ).value;
+const filter =
+document.getElementById(
+"filter"
+).value;
 
-  if(filter==="all"){
+if(filter==="all"){
 
-    tampilBuku(buku);
+tampilBuku(buku);
 
-  }else{
+}else{
 
-    tampilBuku(
-      buku.filter(
-        b=>b.kategori===filter
-      )
-    );
+tampilBuku(
 
-  }
+buku.filter(
+b=>b.kategori===filter
+)
+
+);
+
+}
 
 }
 
 function searchBuku(){
 
-  const keyword =
-  document.getElementById(
-    "search"
-  ).value.toLowerCase();
+const keyword =
+document.getElementById(
+"search"
+).value.toLowerCase();
 
-  const hasil = buku.filter(
-    b=>b.judul
-    .toLowerCase()
-    .includes(keyword)
-  );
+const hasil =
+buku.filter(
 
-  tampilBuku(hasil);
+b=>b.judul
+.toLowerCase()
+.includes(keyword)
+
+);
+
+tampilBuku(hasil);
 
 }
 
