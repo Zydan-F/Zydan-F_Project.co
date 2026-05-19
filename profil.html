@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profil Saya - Perpus Digital</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .profile-container { background: white; padding: 40px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); max-width: 600px; margin: 20px auto; }
+        .form-group { margin-bottom: 20px; }
+        .form-control { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; }
+        .btn-action { padding: 12px 24px; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; transition: 0.3s; }
+        .btn-green { background: #1b5e20; color: white; }
+        .btn-gray { background: #e0e0e0; color: #333; margin-right: 10px; }
+        .profile-img-big { width: 120px; height: 120px; border-radius: 50%; object-fit: cover; border: 4px solid #e8f5e9; margin-bottom: 15px; }
+    </style>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<div class="sidebar">
+    <div class="user-profile">
+        <img src="https://i.pravatar.cc/150?img=12" class="profile-img" id="userAvatarSidebar">
+        <h3 id="usernameUser">Memuat...</h3>
+    </div>
+    <div class="menu" id="menuContainer">
+        <a href="index.html">Dashboard</a>
+        <a href="profil.html" style="background:#e8f5e9; color:#1b5e20;">Profil Saya</a>
+        <a href="buku.html">Daftar Buku</a>
+        <a href="#" id="logoutBtn">Logout</a>
+    </div>
+</div>
+
+<!-- KONTEN -->
+<div class="content" style="margin-left: 280px; padding: 40px;">
+    <h2>Manajemen Akun</h2>
+    <div class="profile-container">
+        
+        <div id="viewModeContainer">
+            <div style="text-align: center; margin-bottom: 30px;">
+                <img src="https://i.pravatar.cc/150?img=12" id="userAvatarDisplay" class="profile-img-big">
+                <h3 id="infoNamaLengkap">-</h3>
+            </div>
+            <p><strong>Email:</strong> <span id="infoEmail">-</span></p>
+            <button id="btnBukaEditor" class="btn-action btn-green" style="margin-top:20px;">Edit Profil</button>
+        </div>
+
+        <div id="editModeContainer" style="display: none;">
+            <h3>Perbarui Profil</h3>
+            <div class="form-group">
+                <label>Nama Lengkap</label>
+                <input type="text" id="inputNama" class="form-control">
+            </div>
+            <div class="form-group">
+                <label>Pilih Foto Baru</label>
+                <input type="file" id="inputFileAvatar" class="form-control" accept="image/*">
+            </div>
+            <div style="display: flex; justify-content: flex-end;">
+                <button id="btnBatalEdit" class="btn-action btn-gray">Batal</button>
+                <button id="btnSimpanProfil" class="btn-action btn-green">Simpan Perubahan</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="module">
+    import { auth, onAuthStateChanged, signOut } from "./firebase.js";
+    import { updateProfile } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+
+    const viewBlock = document.getElementById("viewModeContainer");
+    const editBlock = document.getElementById("editModeContainer");
+
+    // Load Data
+    onAuthStateChanged(auth, (user) => {
+        if (!user) { window.location.href = "login.html"; return; }
+        
+        // Ambil data nama dari Firebase, foto dari LocalStorage browser
+        const nama = user.displayName || "Pengguna Baru";
+        const fotoLocal = localStorage.getItem('foto_' + user.uid) || "https://i.pravatar.cc/150?img=12";
+        
+        document.getElementById("usernameUser").innerText = nama;
+        document.getElementById("infoNamaLengkap").innerText = nama;
+        document.getElementById("infoEmail").innerText = user.email;
+        document.getElementById("userAvatarDisplay").src = fotoLocal;
+        document.getElementById("userAvatarSidebar").src = fotoLocal;
+        document.getElementById("inputNama").value = nama;
+    });
+
+    // Toggle Edit
+    document.getElementById("btnBukaEditor").addEventListener("click", () => {
+        viewBlock.style.display = "none";
+        editBlock.style.display = "block";
+    });
+
+    document.getElementById("btnBatalEdit").addEventListener("click", () => {
+        editBlock.style.display = "none";
+        viewBlock.style.display = "block";
+    });
+
+    // Simpan Data
+    document.getElementById("btnSimpanProfil").addEventListener("click", async () => {
+        const btn = document.getElementById("btnSimpanProfil");
+        const fileInput = document.getElementById("inputFileAvatar");
+        const namaBaru = document.getElementById("inputNama").value;
+        
+        btn.innerText = "Menyimpan...";
+        btn.disabled = true;
+
+        try {
+            // 1. Update Nama ke Firebase (Sync ke semua perangkat)
+            await updateProfile(auth.currentUser, { displayName: namaBaru });
+
+            // 2. Update Foto ke LocalStorage (Simpan di Browser lokal)
+            if (fileInput.files && fileInput.files[0]) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    localStorage.setItem('foto_' + auth.currentUser.uid, e.target.result);
+                    alert("Profil berhasil diperbarui!");
+                    window.location.reload();
+                };
+                reader.readAsDataURL(fileInput.files[0]);
+            } else {
+                alert("Profil berhasil diperbarui!");
+                window.location.reload();
+            }
+        } catch (e) {
+            alert("Terjadi kesalahan: " + e.message);
+            btn.disabled = false;
+            btn.innerText = "Simpan Perubahan";
+        }
+    });
+
+    document.getElementById("logoutBtn").addEventListener("click", () => signOut(auth));
+</script>
+</body>
+</html>

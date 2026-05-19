@@ -1,100 +1,103 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-
-<meta charset="UTF-8">
-
-<title>Daftar Buku</title>
-
-<link rel="stylesheet"
-href="style.css">
-
+    <meta charset="UTF-8">
+    <title>Daftar Buku - Perpus Digital</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .content { margin-left: 280px; padding: 30px; }
+        .controls { display: flex; gap: 15px; margin-bottom: 25px; }
+        .controls input, .controls select { padding: 10px 15px; border-radius: 8px; border: 1px solid #ddd; }
+        #wadahBuku { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 20px; }
+        .kartu-buku { background: white; border: 1px solid #eee; border-radius: 12px; padding: 15px; text-align: center; transition: 0.3s; }
+        .kartu-buku:hover { box-shadow: 0 5px 15px rgba(0,0,0,0.1); transform: translateY(-5px); }
+        .kartu-buku img { width: 100%; height: 200px; object-fit: cover; border-radius: 8px; }
+    </style>
 </head>
-
 <body>
 
 <div class="sidebar">
-
-<div class="logo-header">
-
-<img
-src="https://www.smkn1suboh.sch.id/resources/images/logo.png"
->
-
-<div>
-
-<h1>
-Perpustakaan Digital
-</h1>
-
-<p>
-SMKN 1 Suboh
-</p>
-
-</div>
-
-</div>
-
-<div class="menu">
-
-<a href="index.html">
-Dashboard
-</a>
-
-<a href="buku.html">
-Daftar Buku
-</a>
-
-<a href="lokasi.html">
-Lokasi
-</a>
-
-<a href="credit.html">
-Credit
-</a>
-
-</div>
-
+    <div class="user-profile">
+        <img src="https://i.pravatar.cc/150?img=12" class="profile-img" id="userAvatar">
+        <h3 id="usernameUser">Memuat...</h3>
+    </div>
+    <div class="menu" id="menuContainer">
+        <a href="index.html">Dashboard</a>
+        <a href="profil.html">Profil Saya</a>
+        <a href="buku.html" style="background:#e8f5e9; color:#1b5e20;">Daftar Buku</a>
+        <a href="lokasi.html">Lokasi</a>
+        <a href="credit.html">Credit & Info</a>
+        <a href="#" id="logoutBtn">Logout</a>
+    </div>
 </div>
 
 <div class="content">
-
-<h2>Daftar Buku</h2>
-
-<input
-type="text"
-id="search"
-placeholder="Cari buku..."
-onkeyup="searchBuku()"
->
-
-<select
-id="filter"
-onchange="filterBuku()"
->
-
-<option value="all">
-Semua
-</option>
-
-<option value="Novel">
-Novel
-</option>
-
-<option value="Indie">
-Indie
-</option>
-
-</select>
-
-<div
-id="listBuku"
-class="grid"
-></div>
-
+    <h1>Daftar Buku</h1>
+    <div class="controls">
+        <input type="text" id="searchInput" placeholder="Cari judul..." onkeyup="filterBuku()">
+        <select id="filterKategori" onchange="filterBuku()">
+            <option value="Semua">Semua Kategori</option>
+            <option value="Jaringan">Jaringan</option>
+            <option value="Server">Server</option>
+        </select>
+    </div>
+    <div id="wadahBuku"></div>
 </div>
 
-<script src="script.js"></script>
+<script type="module">
+    import { auth, onAuthStateChanged, signOut } from "./firebase.js";
 
+    // Data Manual (Bisa Anda tarik dari Firestore nanti)
+    const daftarBuku = [
+        { judul: "Mikrotik Dasar", kategori: "Jaringan", cover: "https://via.placeholder.com/200", link: "#" },
+        { judul: "Linux Server", kategori: "Server", cover: "https://via.placeholder.com/200", link: "#" }
+    ];
+
+    // Fungsi Filter
+    window.filterBuku = function() {
+        const keyword = document.getElementById("searchInput").value.toLowerCase();
+        const kategori = document.getElementById("filterKategori").value;
+        const wadah = document.getElementById("wadahBuku");
+        wadah.innerHTML = ""; 
+
+        daftarBuku.forEach(buku => {
+            if (buku.judul.toLowerCase().includes(keyword) && (kategori === "Semua" || buku.kategori === kategori)) {
+                wadah.innerHTML += `
+                    <div class="kartu-buku">
+                        <img src="${buku.cover}">
+                        <h4>${buku.judul}</h4>
+                    </div>`;
+            }
+        });
+    }
+
+    onAuthStateChanged(auth, (user) => {
+        if (!user) { window.location.href = "login.html"; return; }
+
+        // 1. Logika Nama + Mahkota
+        const namaBersih = (user.displayName || "User").replace("👑", "").trim();
+        const listOwner = ["achizzanfathirazka@gmail.com", "owner@gmail.com"];
+        const isOwner = listOwner.includes(user.email.trim().toLowerCase());
+        document.getElementById("usernameUser").innerText = isOwner ? namaBersih + " 👑" : namaBersih;
+
+        // 2. Logika Foto Lokal
+        const fotoLocal = localStorage.getItem('foto_' + user.uid);
+        document.getElementById("userAvatar").src = fotoLocal || user.photoURL || "https://i.pravatar.cc/150?img=12";
+
+        // 3. Logika Menu Admin
+        if (isOwner && !document.getElementById("menuAdmin")) {
+            const adminLink = document.createElement("a");
+            adminLink.href = "admin.html";
+            adminLink.id = "menuAdmin";
+            adminLink.innerText = "Panel Admin 🔐";
+            document.getElementById("menuContainer").insertBefore(adminLink, document.getElementById("logoutBtn"));
+        }
+
+        // Jalankan Filter
+        filterBuku();
+    });
+
+    document.getElementById("logoutBtn").addEventListener("click", () => signOut(auth).then(() => location.href = "login.html"));
+</script>
 </body>
 </html>

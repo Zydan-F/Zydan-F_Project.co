@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lokasi - Perpus Digital</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .location-card { background: white; padding: 30px; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); margin-top: 20px; }
+        .map-frame { width: 100%; height: 400px; border: 0; border-radius: 10px; margin-top: 20px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        h2 { color: #1b5e20; }
+    </style>
+</head>
+<body>
+
+<div class="sidebar">
+    <div class="logo-header">
+        <img src="https://www.smkn1suboh.sch.id/resources/images/logo.png" alt="Logo">
+        <div>
+            <h1>Perpustakaan Digital</h1>
+            <p>SMKN 1 Suboh</p>
+        </div>
+    </div>
+    <div class="user-profile">
+        <img src="https://i.pravatar.cc/150?img=12" class="profile-img" id="userAvatar">
+        <h3 id="usernameUser">Memuat...</h3>
+    </div>
+    <div class="menu" id="menuContainer">
+        <a href="index.html">Dashboard</a>
+        <a href="profil.html">Profil Saya</a>
+        <a href="buku.html">Daftar Buku</a>
+        <a href="lokasi.html" style="background:#66bb6a; color:white;">Lokasi</a>
+        <a href="credit.html">Credit & Info</a>
+        <a href="#" id="logoutBtn">Logout</a>
+    </div>
+</div>
+
+<div class="content">
+    <h2>Lokasi Perpustakaan</h2>
+    <div class="location-card">
+        <h3>SMKN 1 Suboh, Situbondo</h3>
+        <p>Perpustakaan kami terletak strategis di area kampus sekolah. Fasilitas kami mencakup ruang baca ber-AC, koleksi buku referensi, dan akses digital 24/7 melalui sistem ini.</p>
+        
+        <p><strong>Alamat:</strong> Jl. Raya Kawah Ijen, Suboh, Kabupaten Situbondo, Jawa Timur 68354</p>
+        
+        <iframe class="map-frame" 
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3953.1118671607563!2d113.725916014778!3d-7.778033994394982!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2dd6d7d8e6a5ea39%3A0xc39f9fa9fb9f82d4!2sSMK%20Negeri%201%20Suboh!5e0!3m2!1sid!2sid!4v1689230554124!5m2!1sid!2sid" 
+            allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade">
+        </iframe>
+    </div>
+</div>
+
+<script type="module">
+    import { auth, onAuthStateChanged, signOut } from "./firebase.js";
+
+    onAuthStateChanged(auth, (user) => {
+        if (!user) { window.location.href = "login.html"; return; }
+
+        // Logic Nama + Mahkota
+        const namaBersih = (user.displayName || "User").replace("👑", "").trim();
+        const listOwner = ["achizzanfathirazka@gmail.com", "owner@gmail.com"];
+        const isOwner = listOwner.includes(user.email.trim().toLowerCase());
+        document.getElementById("usernameUser").innerText = isOwner ? namaBersih + " 👑" : namaBersih;
+
+        // Logic Foto Lokal
+        const fotoLocal = localStorage.getItem('foto_' + user.uid);
+        document.getElementById("userAvatar").src = fotoLocal || user.photoURL || "https://i.pravatar.cc/150?img=12";
+
+        // Logic Admin
+        if (isOwner && !document.getElementById("menuAdmin")) {
+            const adminLink = document.createElement("a");
+            adminLink.href = "admin.html";
+            adminLink.id = "menuAdmin";
+            adminLink.innerText = "Panel Admin 🔐";
+            document.getElementById("menuContainer").insertBefore(adminLink, document.getElementById("logoutBtn"));
+        }
+    });
+
+    document.getElementById("logoutBtn").addEventListener("click", () => signOut(auth).then(() => location.href = "login.html"));
+</script>
+</body>
+</html>

@@ -1,110 +1,259 @@
-body{
-  margin:0;
-  font-family:Arial;
-  display:flex;
-  background:#e8f5e9;
-}
-/* SIDEBAR */
-
-.sidebar{
-  width:250px;
-  min-height:100vh;
-  background:
-  linear-gradient(
-    180deg,
-    #1b5e20,
-    #2e7d32
-  );
-
-  color:white;
-  padding:20px;
+/* ==========================================================================
+   RESET & DASAR UTAMA
+   ========================================================================== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-/* LOGO */
-
-.logo-header{
-  display:flex;
-  align-items:center;
-  gap:10px;
-  margin-bottom:20px;
+body {
+    background-color: #f4f7f6;
+    color: #333;
+    display: block;
 }
 
-.logo-header img{
-  width:50px;
-  height:50px;
-  background:white;
-  border-radius:8px;
-  padding:5px;
+/* ==========================================================================
+   STRUKTUR SIDEBAR NAVIGASI
+   ========================================================================== */
+.sidebar {
+    width: 260px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    background: #1b5e20;
+    color: white;
+    padding: 20px;
+    z-index: 100;
 }
 
-.logo-header h1{
-  margin:0;
-  font-size:16px;
+.logo-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 25px;
 }
 
-.logo-header p{
-  margin:0;
-  font-size:12px;
+.logo-header img {
+    width: 45px;
+    height: auto;
 }
 
-/* MENU */
-
-.menu a{
-  display:block;
-  padding:10px;
-  margin:5px 0;
-  background:
-  rgba(255,255,255,0.1);
-
-  color:white;
-  text-decoration:none;
-  border-radius:5px;
-
-  transition:.3s;
+.logo-header h1 {
+    font-size: 16px;
+    margin: 0;
+    font-weight: 700;
+    line-height: 1.2;
 }
 
-.menu a:hover{
-  background:#66bb6a;
-  color:black;
-  transform:translateX(5px);
+.logo-header p {
+    font-size: 12px;
+    opacity: 0.8;
 }
 
-/* CONTENT */
-
-.content{
-  flex:1;
-  padding:20px;
-
-  animation:
-  fadeIn .6s ease;
+.user-profile {
+    text-align: center;
+    padding: 15px 0 20px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.15);
+    margin-bottom: 20px;
 }
 
-/* USER */
-
-.user-profile{
-  text-align:center;
-  margin-bottom:20px;
+.profile-img {
+    width: 85px;
+    height: 85px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid #66bb6a;
+    margin-bottom: 10px;
+    display: inline-block;
 }
 
-.profile-img{
-  width:90px;
-  height:90px;
-  border-radius:50%;
-  border:4px solid white;
+.user-profile h3 {
+    font-size: 14px;
+    font-weight: 600;
+    word-break: break-all;
+    padding: 0 5px;
 }
 
-/* ANIMASI */
-
-@keyframes fadeIn{
-
-from{
-  opacity:0;
-  transform:translateY(15px);
+.menu a {
+    display: block;
+    color: #e8f5e9;
+    text-decoration: none;
+    padding: 12px 15px;
+    border-radius: 6px;
+    margin-bottom: 6px;
+    transition: all 0.3s ease;
+    font-size: 15px;
+    font-weight: 500;
 }
 
-to{
-  opacity:1;
-  transform:translateY(0);
+.menu a:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
 }
 
+/* ==========================================================================
+   STRUKTUR KONTEN UTAMA
+   ========================================================================== */
+.content {
+    margin-left: 260px;
+    padding: 40px;
+    min-height: 100vh;
 }
+
+.content h2 {
+    color: #1b5e20;
+    font-size: 28px;
+    font-weight: 700;
+    margin-bottom: 8px;
+}
+
+/* ==========================================================================
+   FORM, KARTU, DAN INPUT DATA
+   ========================================================================== */
+.admin-card {
+    background: white;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    margin-top: 25px;
+    border: 1px solid #e0e0e0;
+}
+
+.form-group {
+    margin-bottom: 18px;
+    text-align: left;
+}
+
+.form-group label {
+    display: block;
+    font-weight: 600;
+    font-size: 14px;
+    margin-bottom: 8px;
+    color: #444;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #cccccc;
+    border-radius: 6px;
+    font-size: 14px;
+    outline: none;
+    transition: all 0.3s ease;
+}
+
+.form-group input:focus {
+    border-color: #66bb6a;
+    box-shadow: 0 0 0 3px rgba(102,187,106,0.2);
+}
+
+/* Kustom File Input (Upload) */
+.file-upload-wrapper {
+    position: relative;
+    margin-bottom: 18px;
+    display: block;
+    width: 100%;
+}
+
+.btn-upload {
+    display: block;
+    background: #f1f8e9;
+    color: #33691e;
+    border: 2px dashed #66bb6a;
+    padding: 12px;
+    border-radius: 6px;
+    font-weight: 600;
+    font-size: 14px;
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+.btn-upload:hover {
+    background: #e8f5e9;
+}
+
+.file-upload-wrapper input[type="file"] {
+    position: absolute;
+    left: 0;
+    top: 0;
+    opacity: 0;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+}
+
+/* Tombol Global */
+button.btn-primary {
+    background: #66bb6a;
+    color: white;
+    border: none;
+    padding: 12px;
+    font-size: 15px;
+    font-weight: bold;
+    border-radius: 6px;
+    cursor: pointer;
+    width: 100%;
+    transition: all 0.3s ease;
+}
+
+button.btn-primary:hover {
+    background: #4caf50;
+}
+
+button.btn-primary:disabled {
+    background: #a5d6a7;
+    cursor: not-allowed;
+}
+
+/* ==========================================================================
+   POPUP NOTIFIKASI CUSTOM
+   ========================================================================== */
+.alert-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+
+.alert-box {
+    background: white;
+    padding: 25px;
+    border-radius: 10px;
+    text-align: center;
+    max-width: 340px;
+    width: 90%;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+}
+
+.alert-box h3 {
+    margin-top: 0;
+    color: #1b5e20;
+    margin-bottom: 10px;
+}
+
+.btn-ok {
+    background: #1b5e20;
+    color: white;
+    border: none;
+    padding: 8px 25px;
+    margin-top: 15px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: background 0.2s;
+}
+
+.btn-ok:hover {
+    background: #2e7d32;
+}
+

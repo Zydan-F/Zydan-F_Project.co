@@ -1,118 +1,273 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel Admin - Perpus Digital</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* Secara default, sembunyikan container utama demi keamanan sebelum owner tervalidasi */
+        #halamanAdminUtama {
+            display: none;
+        }
 
-<meta charset="UTF-8">
-
-<title>Admin Panel</title>
-
-<link rel="stylesheet"
-href="style.css">
-
+        /* Gaya Layout Grid Analytics Admin */
+        .analytics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        .analytics-card {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 5px solid #1b5e20;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.02);
+        }
+        .analytics-card h4 {
+            color: #666;
+            font-size: 14px;
+            text-transform: uppercase;
+            margin-bottom: 5px;
+        }
+        .analytics-card .value {
+            font-size: 24px;
+            font-weight: 700;
+            color: #1b5e20;
+        }
+        .admin-layout {
+            display: flex;
+            gap: 30px;
+            flex-wrap: wrap;
+        }
+        .flex-form, .flex-info {
+            flex: 1;
+            min-width: 320px;
+        }
+        .activity-list {
+            list-style: none;
+            padding: 0;
+        }
+        .activity-item {
+            padding: 12px 0;
+            border-bottom: 1px solid #eee;
+            font-size: 14px;
+            color: #555;
+        }
+    </style>
 </head>
-
 <body>
 
+<!-- SIDEBAR UTAMA -->
 <div class="sidebar">
+    <div class="logo-header">
+        <img src="https://www.smkn1suboh.sch.id/resources/images/logo.png" alt="Logo">
+        <div>
+            <h1>Perpustakaan Digital</h1>
+            <p>SMKN 1 Suboh</p>
+        </div>
+    </div>
 
-<h2>Admin Panel</h2>
+    <div class="user-profile">
+        <img src="https://i.pravatar.cc/150?img=12" class="profile-img" id="userAvatar">
+        <h3 id="usernameUser">Memuat...</h3>
+    </div>
 
-<div class="menu">
-
-<a href="index.html">
-Dashboard
-</a>
-
-<a href="buku.html">
-Buku
-</a>
-
+    <div class="menu">
+        <a href="index.html">Dashboard</a>
+        <a href="profil.html">Profil Saya</a>
+        <a href="buku.html">Daftar Buku</a>
+        <a href="lokasi.html">Lokasi</a>
+        <a href="credit.html">Credit</a>
+        <!-- Menu Admin di sini sudah dihapus total agar tidak double/mengganggu tampilan -->
+        <a href="#" id="logoutBtn">Logout</a>
+    </div>
 </div>
 
+<!-- CONTAINER KONTEN UTAMA PANEL (Terbuka Otomatis setelah Lolos Validasi) -->
+<div class="content" id="halamanAdminUtama">
+    <h2>Panel Kontrol Admin</h2>
+    <p style="color:#666; margin-bottom: 30px;">Kelola data statistik sistem dan publikasikan koleksi buku digital baru.</p>
+    
+    <!-- GRID STATISTIK -->
+    <div class="analytics-grid">
+        <div class="analytics-card">
+            <h4>Total Buku Terdaftar</h4>
+            <div class="value" id="statTotalBuku">0</div>
+        </div>
+        <div class="analytics-card" style="border-left-color: #66bb6a;">
+            <h4>Kategori Unik</h4>
+            <div class="value" id="statTotalKategori">0</div>
+        </div>
+        <div class="analytics-card" style="border-left-color: #ff9800;">
+            <h4>Sesi Admin Aktif</h4>
+            <div class="value" style="color: #ff9800;">Online</div>
+        </div>
+    </div>
+
+    <div class="admin-layout">
+        <!-- FORMULIR INPUT BUKU -->
+        <div class="flex-form">
+            <div style="background: white; padding: 20px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.02);">
+                <h3 style="color: #1b5e20; margin-top: 0; margin-bottom: 20px;">Tambah Buku Baru</h3>
+                
+                <div style="margin-bottom: 15px;">
+                    <label style="display:block; margin-bottom: 5px; font-weight: 600;">Judul Buku</label>
+                    <input type="text" id="judulBuku" placeholder="Masukkan judul lengkap buku" style="width:100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box;">
+                </div>
+                
+                <div style="margin-bottom: 15px;">
+                    <label style="display:block; margin-bottom: 5px; font-weight: 600;">Kategori / Genre</label>
+                    <input type="text" id="kategoriBuku" placeholder="Contoh: Fiksi, Pelajaran, Teknologi" style="width:100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box;">
+                </div>
+                
+                <div style="margin-bottom: 20px;">
+                    <label style="display:block; margin-bottom: 5px; font-weight: 600;">Sampul Buku (Cover)</label>
+                    <input type="file" id="coverBuku" accept="image/*">
+                </div>
+                
+                <p id="uploadStatus" style="font-size: 14px; color: #2e7d32; display: none; font-weight: bold; margin-bottom: 15px;"></p>
+
+                <button id="btnSimpan" style="background: #1b5e20; color: white; border: none; padding: 12px 20px; border-radius: 4px; cursor: pointer; font-weight: 600; width: 100%;">Simpan & Unggah ke Firebase</button>
+            </div>
+        </div>
+
+        <!-- LOG AKTIVITAS -->
+        <div class="flex-info">
+            <div style="min-height: 360px; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.02);">
+                <h3 style="color: #333; margin-top: 0; margin-bottom: 15px;">Log Aktivitas Terakhir</h3>
+                <ul class="activity-list" id="logAktivitas">
+                    <li class="activity-item">Sistem memuat riwayat aktivitas...</li>
+                </ul>
+            </div>
+        </div>
+    </div>
 </div>
 
-<div class="content">
+<!-- SCRIPT UTAMA PANEL ADMIN -->
+<script type="module">
+    import { auth, onAuthStateChanged, signOut, db, storage } from "./firebase.js";
+    import { collection, addDoc, getDocs, query, orderBy, limit } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+    import { ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-storage.js";
 
-<h2>Tambah Buku</h2>
+    // DAFTAR EMAIL OWNER YANG SAH (Huruf Kecil Semua!)
+    const listOwner = ["achizzanfathirazka@gmail.com", "owner@gmail.com"];
 
-<input
-type="text"
-id="judul"
-placeholder="Judul Buku"
->
+    // PENGAMAT OTENTIKASI PENGGUNA
+    onAuthStateChanged(auth, (user) => {
+        if (user) {
+            const emailSekarang = user.email.trim().toLowerCase();
 
-<input
-type="text"
-id="kategori"
-placeholder="Kategori"
->
+            // Cek di balik layar: Apakah email ini terdaftar sebagai owner?
+            if (listOwner.includes(emailSekarang)) {
+                // JIKA VALID: Tampilkan isi halaman utama admin
+                document.getElementById("halamanAdminUtama").style.display = "block";
+                document.getElementById("usernameUser").innerText = "Admin Master 👑";
 
-<input
-type="text"
-id="gambar"
-placeholder="Link Gambar"
->
+                // Muat analisis data dari database
+                muatAnalisisSistem();
+            } else {
+                // JIKA BUKAN OWNER: Langsung lempar balik ke index.html tanpa basa-basi/alert
+                window.location.href = "index.html";
+            }
+        } else {
+            // Jika belum login sama sekali, oper ke login.html
+            window.location.href = "login.html";
+        }
+    });
 
-<input
-type="text"
-id="link"
-placeholder="Link Buku"
->
+    // FUNGSI ANALYTICS DATA (MEMBACA DATA KOLEKSI DARI FIRESTORE)
+    async function muatAnalisisSistem() {
+        try {
+            const q = collection(db, "books");
+            const querySnapshot = await getDocs(q);
+            
+            let totalBuku = querySnapshot.size;
+            let kategoriSet = new Set();
+            let htmlLog = "";
 
-<button onclick="tambahBuku()">
+            querySnapshot.forEach((doc) => {
+                const data = doc.data();
+                if(data.kategori) kategoriSet.add(data.kategori.trim().toLowerCase());
+            });
 
-Tambah Buku
+            document.getElementById("statTotalBuku").innerText = totalBuku;
+            document.getElementById("statTotalKategori").innerText = kategoriSet.size;
 
-</button>
+            const qTerbaru = query(collection(db, "books"), orderBy("createdAt", "desc"), limit(4));
+            const snapTerbaru = await getDocs(qTerbaru);
 
-</div>
+            if(!snapTerbaru.empty) {
+                snapTerbaru.forEach((doc) => {
+                    const data = doc.data();
+                    htmlLog += `<li class="activity-item">Berhasil menambahkan buku <strong>"${data.judul}"</strong> ke kategori [${data.kategori}].</li>`;
+                });
+                document.getElementById("logAktivitas").innerHTML = htmlLog;
+            } else {
+                document.getElementById("logAktivitas").innerHTML = '<li class="activity-item">Belum ada aktivitas penambahan koleksi buku.</li>';
+            }
+        } catch (error) {
+            console.error("Gagal memuat analisis data database:", error);
+        }
+    }
 
-<script>
+    // PROSES UNGHAH DATA BUKU BARU
+    document.getElementById("btnSimpan").addEventListener("click", async () => {
+        const judul = document.getElementById("judulBuku").value.trim();
+        const kategori = document.getElementById("kategoriBuku").value.trim();
+        const fileInput = document.getElementById("coverBuku");
+        const file = fileInput.files[0];
+        const statusText = document.getElementById("uploadStatus");
+        const btn = document.getElementById("btnSimpan");
 
-function tambahBuku(){
+        if (!judul || !kategori || !file) {
+            alert("Mohon isi semua form dan pilih file gambar sampul!");
+            return;
+        }
 
-const data = {
+        try {
+            btn.disabled = true;
+            statusText.style.display = "block";
+            statusText.innerText = "⏳ Mengunggah gambar ke Firebase Storage...";
 
-judul:
-document.getElementById(
-"judul"
-).value,
+            const fileRef = ref(storage, `covers/${Date.now()}_${file.name}`);
+            await uploadBytes(fileRef, file);
+            
+            statusText.innerText = "🔗 Mengambil tautan berkas...";
+            const coverUrl = await getDownloadURL(fileRef);
 
-kategori:
-document.getElementById(
-"kategori"
-).value,
+            statusText.innerText = "💾 Menyimpan ringkasan data ke Firestore...";
+            await addDoc(collection(db, "books"), {
+                judul: judul,
+                kategori: kategori,
+                coverUrl: coverUrl,
+                createdAt: new Date()
+            });
 
-gambar:
-document.getElementById(
-"gambar"
-).value,
+            statusText.innerText = "✅ Berhasil dipublikasikan!";
+            alert(`Sukses! Buku "${judul}" berhasil ditambahkan.`);
+            
+            document.getElementById("judulBuku").value = "";
+            document.getElementById("kategoriBuku").value = "";
+            fileInput.value = "";
+            statusText.style.display = "none";
+            
+            muatAnalisisSistem();
+        } catch (error) {
+            console.error("Gagal mengunggah data:", error);
+            alert("Terjadi kegagalan unggah!");
+            statusText.style.display = "none";
+        } finally {
+            btn.disabled = false;
+        }
+    });
 
-link:
-document.getElementById(
-"link"
-).value
-
-};
-
-let buku = JSON.parse(
-localStorage.getItem("buku")
-) || [];
-
-buku.push(data);
-
-localStorage.setItem(
-"buku",
-JSON.stringify(buku)
-);
-
-alert(
-"Buku berhasil ditambahkan"
-);
-
-}
-
+    // PROSES TOMBOL LOGOUT
+    document.getElementById("logoutBtn").addEventListener("click", (e) => {
+        e.preventDefault();
+        signOut(auth).then(() => { window.location.href = "login.html"; });
+    });
 </script>
-
 </body>
 </html>
