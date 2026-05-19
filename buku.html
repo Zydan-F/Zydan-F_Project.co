@@ -1,74 +1,96 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8">
-  <title>Daftar Buku</title>
-  <link rel="stylesheet" href="style.css">
+
+<meta charset="UTF-8">
+
+<title>Daftar Buku</title>
+
+<link rel="stylesheet"
+href="style.css">
+
 </head>
 
 <body>
 
 <div class="sidebar">
 
-  <div class="logo-header">
+<div class="logo-header">
 
-    <img src="https://www.smkn1suboh.sch.id/resources/images/logo.png">
+<img
+src="https://www.smkn1suboh.sch.id/resources/images/logo.png"
+>
 
-    <div>
-      <h1>Perpustakaan Digital</h1>
-      <p>SMKN 1 Suboh</p>
-    </div>
+<div>
 
-  </div>
+<h1>
+Perpustakaan Digital
+</h1>
 
-  <div class="menu">
+<p>
+SMKN 1 Suboh
+</p>
 
-    <a href="index.html">Dashboard</a>
+</div>
 
-    <a href="buku.html">Daftar Buku</a>
+</div>
 
-    <a href="lokasi.html">Lokasi</a>
+<div class="menu">
 
-    <a href="credit.html">Credit</a>
+<a href="index.html">
+Dashboard
+</a>
 
-  </div>
+<a href="buku.html">
+Daftar Buku
+</a>
+
+<a href="lokasi.html">
+Lokasi
+</a>
+
+<a href="credit.html">
+Credit
+</a>
+
+</div>
 
 </div>
 
 <div class="content">
 
-  <h2>Daftar Buku</h2>
+<h2>Daftar Buku</h2>
 
-  <input
-    type="text"
-    id="search"
-    placeholder="Cari buku..."
-    onkeyup="searchBuku()"
-  >
+<input
+type="text"
+id="search"
+placeholder="Cari buku..."
+onkeyup="searchBuku()"
+>
 
-  <select
-    id="filter"
-    onchange="filterBuku()"
-  >
+<select
+id="filter"
+onchange="filterBuku()"
+>
 
-    <option value="all">
-      Semua
-    </option>
+<option value="all">
+Semua
+</option>
 
-    <option value="Novel">
-      Novel
-    </option>
+<option value="Novel">
+Novel
+</option>
 
-    <option value="Indie">
-      Indie
-    </option>
+<option value="Indie">
+Indie
+</option>
 
-  </select>
+</select>
 
-  <div
-    id="listBuku"
-    class="grid"
-  ></div>
+<div
+id="listBuku"
+class="grid"
+></div>
 
 </div>
 
