@@ -1,188 +1,43 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - Perpustakaan Digital</title>
-    <style>
-        * {
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            margin: 0;
-            padding: 0;
-        }
-        body {
-            background-color: #f4f7f5;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-        }
-        .login-container {
-            background: white;
-            padding: 40px;
-            border-radius: 12px;
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05);
-            width: 100%;
-            max-width: 400px;
-            text-align: center;
-        }
-        .logo-section img {
-            width: 80px;
-            height: auto;
-            margin-bottom: 15px;
-        }
-        .logo-section h2 {
-            color: #1b5e20;
-            font-size: 24px;
-            margin-bottom: 5px;
-        }
-        .logo-section p {
-            color: #666;
-            font-size: 14px;
-            margin-bottom: 30px;
-        }
-        .form-group {
-            text-align: left;
-            margin-bottom: 20px;
-        }
-        .form-group label {
-            display: block;
-            margin-bottom: 6px;
-            font-weight: 600;
-            color: #333;
-            font-size: 14px;
-        }
-        .form-group input {
-            width: 100%;
-            padding: 12px;
-            border: 1px solid #ccc;
-            border-radius: 6px;
-            font-size: 15px;
-            transition: all 0.3s ease;
-        }
-        .form-group input:focus {
-            outline: none;
-            border-color: #66bb6a;
-            box-shadow: 0 0 0 3px rgba(102, 187, 106, 0.2);
-        }
-        .btn-login {
-            background: #1b5e20;
-            color: white;
-            border: none;
-            padding: 14px;
-            width: 100%;
-            border-radius: 6px;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: background 0.2s ease;
-            margin-top: 10px;
-        }
-        .btn-login:hover {
-            background: #2e7d32;
-        }
-        .btn-login:disabled {
-            background: #a5d6a7;
-            cursor: not-allowed;
-        }
-        .error-message {
-            color: #d32f2f;
-            background: #ffebee;
-            padding: 10px;
-            border-radius: 4px;
-            font-size: 14px;
-            margin-bottom: 20px;
-            display: none;
-            text-align: left;
-            border-left: 4px solid #d32f2f;
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Login</title>
+<link rel="stylesheet" href="style.css">
 </head>
+
 <body class="login-body">
 
 <div class="login-container">
-    <div class="logo-section">
-        <img src="https://www.smkn1suboh.sch.id/resources/images/logo.png" alt="Logo SMKN 1 Suboh">
-        <h2>Perpustakaan Digital</h2>
-        <p>SMKN 1 Suboh</p>
-    </div>
 
-    <!-- Kotak Pesan Error -->
-    <div class="error-message" id="errorBox"></div>
-
-    <form id="loginForm">
-        <div class="form-group">
-            <label for="emailInput">Alamat Email</label>
-            <input type="email" id="emailInput" placeholder="Masukkan email Anda" required>
-        </div>
-
-        <div class="form-group">
-            <label for="passwordInput">Kata Sandi</label>
-            <input type="password" id="passwordInput" placeholder="Masukkan password Anda" required>
-        </div>
-
-        <button type="submit" class="btn-login" id="btnSubmit">Masuk ke Akun</button>
-    </form>
+<div class="logo-section">
+<img src="https://www.smkn1suboh.sch.id/resources/images/logo.png">
+<h2>Perpus Digital</h2>
+<p>SMKN 1 Suboh</p>
 </div>
 
-<!-- SCRIPT UTAMA PROSES LOGIN (TIPE MODULE) -->
-<script type="module">
-    // 1. Hubungkan dengan instance auth dari file firebase.js lokal Anda
-    import { auth } from "./firebase.js";
-    
-    // 2. Ambil fungsi otentikasi resmi langsung dari CDN Firebase dengan versi yang sinkron
-    import { signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+<form>
 
-    const loginForm = document.getElementById("loginForm");
-    const emailInput = document.getElementById("emailInput");
-    const passwordInput = document.getElementById("passwordInput");
-    const errorBox = document.getElementById("errorBox");
-    const btnSubmit = document.getElementById("btnSubmit");
+<div class="form-group">
+<input type="email" placeholder="Email">
+</div>
 
-    // 3. Event Listener Deteksi Submit Form
-    loginForm.addEventListener("submit", async (e) => {
-        e.preventDefault();
-        
-        // Sembunyikan error box setiap kali menekan tombol kirim ulang
-        errorBox.style.display = "none";
-        errorBox.innerText = "";
+<br>
 
-        const email = emailInput.value.trim();
-        const password = passwordInput.value;
+<div class="form-group">
+<input type="password" placeholder="Password">
+</div>
 
-        try {
-            // Kunci tombol agar user tidak melakukan klik ganda (double submit)
-            btnSubmit.disabled = true;
-            btnSubmit.innerText = "Membuka Sesi...";
+<br>
 
-            // Kirim data login ke Server Firebase Auth
-            const userCredential = await signInWithEmailAndPassword(auth, email, password);
-            const user = userCredential.user;
+<button class="btn-login">
+Masuk
+</button>
 
-            // Jika sukses, arahkan langsung ke halaman utama dashboard
-            window.location.href = "index.html";
+</form>
 
-        } catch (error) {
-            console.error("Gagal Login:", error.code, error.message);
-            errorBox.style.display = "block";
-            
-            // Pengondisian pesan error agar mudah dipahami oleh user pengguna
-            if (error.code === "auth/invalid-credential" || error.code === "auth/wrong-password" || error.code === "auth/user-not-found") {
-                errorBox.innerText = "⚠️ Email atau kata sandi yang Anda masukkan keliru. Silakan periksa kembali.";
-            } else if (error.code === "auth/invalid-email") {
-                errorBox.innerText = "⚠️ Susunan penulisan email tidak valid (Contoh: nama@email.com).";
-            } else if (error.code === "auth/too-many-requests") {
-                errorBox.innerText = "⚠️ Terlalu banyak percobaan masuk yang gagal. Akun ini ditangguhkan sementara demi keamanan. Coba lagi nanti.";
-            } else {
-                errorBox.innerText = "⚠️ Gagal terhubung ke sistem keamanan: " + error.message;
-            }
-        } finally {
-            // Kembalikan tombol ke keadaan semula
-            btnSubmit.disabled = false;
-            btnSubmit.innerText = "Masuk ke Akun";
-        }
-    });
-</script>
+</div>
+
 </body>
 </html>
