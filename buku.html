@@ -1,8 +1,67 @@
-wadah.innerHTML += `
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Daftar Buku</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="sidebar">
+
+<div class="logo-header">
+<img src="https://www.smkn1suboh.sch.id/resources/images/logo.png">
+<div>
+<h1>Perpustakaan Digital</h1>
+<p>SMKN 1 Suboh</p>
+</div>
+</div>
+
+<div class="menu">
+<a href="index.html">Dashboard</a>
+<a href="buku.html">Daftar Buku</a>
+</div>
+
+</div>
+
+<div class="content">
+
+<div class="page-header">
+<h1>Daftar Buku</h1>
+<p>Koleksi buku digital</p>
+</div>
+
+<div class="controls">
+<input type="text" placeholder="Cari buku">
+<select>
+<option>Semua</option>
+<option>Novel</option>
+<option>Teknologi</option>
+</select>
+</div>
+
+<div id="wadahBuku">
+
 <div class="kartu-buku">
-    <img src="${buku.cover}">
-    <div class="info">
-        <h4>${buku.judul}</h4>
-        <div class="kategori">${buku.kategori}</div>
-    </div>
-</div>`;
+<img src="https://via.placeholder.com/300x400">
+<div class="info">
+<h4>Mikrotik Dasar</h4>
+<div class="kategori">Jaringan</div>
+</div>
+</div>
+
+<div class="kartu-buku">
+<img src="https://via.placeholder.com/300x400">
+<div class="info">
+<h4>Linux Server</h4>
+<div class="kategori">Server</div>
+</div>
+</div>
+
+</div>
+
+</div>
+
+</body>
+</html>
