@@ -12,15 +12,17 @@
 <body>
 
 <!-- SIDEBAR -->
-<div class="sidebar" id="sidebar">
+<div class="sidebar">
 
     <div class="logo-header">
+
         <img src="https://www.smkn1suboh.sch.id/resources/images/logo.png">
 
         <div>
             <h1>Perpus Digital</h1>
             <p>SMKN 1 Suboh</p>
         </div>
+
     </div>
 
     <div class="user-profile">
@@ -36,17 +38,29 @@
 
     <div class="menu">
 
-        <a href="index.html">🏠 Dashboard</a>
+        <a href="index.html" class="active">
+            🏠 Dashboard
+        </a>
 
-        <a href="profil.html">👤 Profil</a>
+        <a href="profil.html">
+            👤 Profil
+        </a>
 
-        <a href="buku.html">📚 Buku</a>
+        <a href="buku.html">
+            📚 Buku
+        </a>
 
-        <a href="lokasi.html">📍 Lokasi</a>
+        <a href="lokasi.html">
+            📍 Lokasi
+        </a>
 
-        <a href="credit.html">❤️ Credit</a>
+        <a href="credit.html">
+            ❤️ Credit
+        </a>
 
-        <a href="#" id="logoutBtn">🚪 Logout</a>
+        <a href="#" id="logoutBtn">
+            🚪 Logout
+        </a>
 
     </div>
 
@@ -56,8 +70,13 @@
 <div class="content">
 
     <div class="page-header">
+
         <h1>Dashboard</h1>
-        <p>Selamat datang di Perpustakaan Digital</p>
+
+        <p>
+            Selamat datang di Perpustakaan Digital
+        </p>
+
     </div>
 
     <div class="dashboard-grid">
@@ -68,7 +87,7 @@
         </div>
 
         <div class="dashboard-card">
-            <h3>Pengguna</h3>
+            <h3>Total User</h3>
             <div class="big">120</div>
         </div>
 
@@ -83,60 +102,85 @@
 
 <script type="module">
 
-import { auth, onAuthStateChanged, signOut } from "./firebase.js";
+import {
+auth,
+onAuthStateChanged,
+signOut
+} from "./firebase.js";
 
-onAuthStateChanged(auth, (user) => {
+onAuthStateChanged(auth,(user)=>{
 
     if(!user){
+
         window.location.href = "login.html";
         return;
+
     }
 
-    // NAMA USER
-    const nama = user.displayName || "Pengguna";
+    // NAMA
+    const nama =
+    user.displayName ||
+    "Pengguna";
 
-    document.getElementById("usernameUser").innerText = nama;
+    document.getElementById(
+    "usernameUser"
+    ).innerText = nama;
 
     // FOTO
-    const fotoLocal = localStorage.getItem('foto_' + user.uid);
+    const foto =
+    localStorage.getItem(
+    'foto_' + user.uid
+    );
 
-    document.getElementById("userAvatar").src =
-        fotoLocal ||
-        user.photoURL ||
-        "https://i.pravatar.cc/150?img=12";
+    document.getElementById(
+    "userAvatar"
+    ).src =
+    foto ||
+    user.photoURL ||
+    "https://i.pravatar.cc/150?img=12";
+
 });
 
 // LOGOUT
-document.getElementById("logoutBtn")
-.addEventListener("click",(e)=>{
+document.getElementById(
+"logoutBtn"
+).addEventListener("click",(e)=>{
 
     e.preventDefault();
 
     signOut(auth).then(()=>{
-        window.location.href = "login.html";
+
+        window.location.href =
+        "login.html";
+
     });
 
 });
 
-/* ===========================
-ANIMASI HIDE SIDEBAR
-=========================== */
+/* ==========================
+ANIMASI SIDEBAR
+========================== */
 
 let lastScroll = 0;
 
+const sidebar =
+document.querySelector(".sidebar");
+
 window.addEventListener("scroll",()=>{
 
-    const sidebar = document.getElementById("sidebar");
+    const currentScroll =
+    window.pageYOffset;
 
-    let currentScroll = window.pageYOffset;
+    if(
+        currentScroll > lastScroll &&
+        currentScroll > 50
+    ){
 
-    if(currentScroll > lastScroll){
-
-        sidebar.style.transform = "translateY(-100%)";
+        sidebar.classList.add("hide");
 
     }else{
 
-        sidebar.style.transform = "translateY(0)";
+        sidebar.classList.remove("hide");
 
     }
 
