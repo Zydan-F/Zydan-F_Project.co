@@ -129,7 +129,34 @@
             btn.innerText = "Simpan Perubahan";
         }
     });
+    /* =========================
+ANIMASI NAVBAR
+========================= */
 
+let lastScroll = 0;
+
+const sidebar =
+document.querySelector(".sidebar");
+
+window.addEventListener("scroll",()=>{
+
+    const currentScroll =
+    window.pageYOffset;
+
+    if(currentScroll > lastScroll
+    && currentScroll > 50){
+
+        sidebar.classList.add("hide");
+
+    }else{
+
+        sidebar.classList.remove("hide");
+
+    }
+
+    lastScroll = currentScroll;
+
+});
     document.getElementById("logoutBtn").addEventListener("click", () => signOut(auth));
 </script>
 </body>
