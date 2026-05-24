@@ -3,64 +3,148 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Dashboard</title>
+
+<title>Dashboard - Perpus Digital</title>
+
 <link rel="stylesheet" href="style.css">
+
 </head>
 <body>
 
-<div class="sidebar">
+<!-- SIDEBAR -->
+<div class="sidebar" id="sidebar">
 
-<div class="logo-header">
-<img src="https://www.smkn1suboh.sch.id/resources/images/logo.png">
-<div>
-<h1>Perpustakaan Digital</h1>
-<p>SMKN 1 Suboh</p>
-</div>
+    <div class="logo-header">
+        <img src="https://www.smkn1suboh.sch.id/resources/images/logo.png">
+
+        <div>
+            <h1>Perpus Digital</h1>
+            <p>SMKN 1 Suboh</p>
+        </div>
+    </div>
+
+    <div class="user-profile">
+
+        <img 
+        src="https://i.pravatar.cc/150?img=12"
+        class="profile-img"
+        id="userAvatar">
+
+        <h3 id="usernameUser">Memuat...</h3>
+
+    </div>
+
+    <div class="menu">
+
+        <a href="index.html">🏠 Dashboard</a>
+
+        <a href="profil.html">👤 Profil</a>
+
+        <a href="buku.html">📚 Buku</a>
+
+        <a href="lokasi.html">📍 Lokasi</a>
+
+        <a href="credit.html">❤️ Credit</a>
+
+        <a href="#" id="logoutBtn">🚪 Logout</a>
+
+    </div>
+
 </div>
 
-<div class="user-profile">
-<img src="https://i.pravatar.cc/150?img=12" class="profile-img">
-<h3>User</h3>
-</div>
-
-<div class="menu">
-<a href="index.html">Dashboard</a>
-<a href="profil.html">Profil</a>
-<a href="buku.html">Buku</a>
-<a href="lokasi.html">Lokasi</a>
-<a href="credit.html">Credit</a>
-<a href="admin.html">Admin</a>
-</div>
-
-</div>
-
+<!-- CONTENT -->
 <div class="content">
 
-<div class="page-header">
-<h1>Dashboard</h1>
-<p>Selamat datang di Perpustakaan Digital</p>
+    <div class="page-header">
+        <h1>Dashboard</h1>
+        <p>Selamat datang di Perpustakaan Digital</p>
+    </div>
+
+    <div class="dashboard-grid">
+
+        <div class="dashboard-card">
+            <h3>Total Buku</h3>
+            <div class="big">245</div>
+        </div>
+
+        <div class="dashboard-card">
+            <h3>Pengguna</h3>
+            <div class="big">120</div>
+        </div>
+
+        <div class="dashboard-card">
+            <h3>Kategori</h3>
+            <div class="big">18</div>
+        </div>
+
+    </div>
+
 </div>
 
-<div class="dashboard-grid">
+<script type="module">
 
-<div class="dashboard-card">
-<h3>Total Buku</h3>
-<div class="big">245</div>
-</div>
+import { auth, onAuthStateChanged, signOut } from "./firebase.js";
 
-<div class="dashboard-card">
-<h3>Pengguna</h3>
-<div class="big">120</div>
-</div>
+onAuthStateChanged(auth, (user) => {
 
-<div class="dashboard-card">
-<h3>Kategori</h3>
-<div class="big">18</div>
-</div>
+    if(!user){
+        window.location.href = "login.html";
+        return;
+    }
 
-</div>
+    // NAMA USER
+    const nama = user.displayName || "Pengguna";
 
-</div>
+    document.getElementById("usernameUser").innerText = nama;
+
+    // FOTO
+    const fotoLocal = localStorage.getItem('foto_' + user.uid);
+
+    document.getElementById("userAvatar").src =
+        fotoLocal ||
+        user.photoURL ||
+        "https://i.pravatar.cc/150?img=12";
+});
+
+// LOGOUT
+document.getElementById("logoutBtn")
+.addEventListener("click",(e)=>{
+
+    e.preventDefault();
+
+    signOut(auth).then(()=>{
+        window.location.href = "login.html";
+    });
+
+});
+
+/* ===========================
+ANIMASI HIDE SIDEBAR
+=========================== */
+
+let lastScroll = 0;
+
+window.addEventListener("scroll",()=>{
+
+    const sidebar = document.getElementById("sidebar");
+
+    let currentScroll = window.pageYOffset;
+
+    if(currentScroll > lastScroll){
+
+        sidebar.style.transform = "translateY(-100%)";
+
+    }else{
+
+        sidebar.style.transform = "translateY(0)";
+
+    }
+
+    lastScroll = currentScroll;
+
+});
+
+</script>
 
 </body>
 </html>
