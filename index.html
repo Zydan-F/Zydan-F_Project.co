@@ -1,103 +1,27 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard - Perpus Digital</title>
-    <link rel="stylesheet" href="style.css">
-    <style>
-        /* Mencegah layar berkedip putih saat loading */
-        body { background: #f4f7f5; transition: opacity 0.3s ease; }
-        
-        /* Style untuk tombol admin */
-        #menuAdmin { 
-            background: #dcedc8; 
-            color: #33691e; 
-            font-weight: 600; 
-            padding: 12px; 
-            border-radius: 8px; 
-            margin: 10px 0; 
-            display: block; 
-            text-decoration: none; 
-            border: 1px solid #c5e1a5;
-        }
-        #menuAdmin:hover { background: #c5e1a5; }
-    </style>
-</head>
-<body>
-
-<div class="sidebar">
-    <div class="logo-header">
-        <img src="https://www.smkn1suboh.sch.id/resources/images/logo.png" alt="Logo">
-        <div>
-            <h1>Perpustakaan Digital</h1>
-            <p>SMKN 1 Suboh</p>
-        </div>
-    </div>
-    <div class="user-profile">
-        <img src="https://i.pravatar.cc/150?img=12" class="profile-img" id="userAvatar">
-        <h3 id="usernameUser">Memuat...</h3>
-    </div>
-    <div class="menu" id="menuContainer">
-        <a href="index.html" style="background:#e8f5e9; color:#1b5e20;">Dashboard</a>
-        <a href="profil.html">Profil Saya</a>
-        <a href="buku.html">Daftar Buku</a>
-        <a href="lokasi.html">Lokasi</a>
-        <a href="credit.html">Credit</a>
-        <a href="#" id="logoutBtn">Logout</a>
-    </div>
-</div>
-
 <div class="content">
-    <h1>Dashboard Perpustakaan</h1>
-    <div class="card">
-        <p>
-            Selamat datang di sistem manajemen perpustakaan digital
-            SMKN 1 Suboh.
-        </p>
+
+    <div class="page-header">
+        <h1>Dashboard</h1>
+        <p>Selamat datang di Perpustakaan Digital SMKN 1 Suboh</p>
     </div>
+
+    <div class="dashboard-grid">
+
+        <div class="dashboard-card">
+            <h3>Total Buku</h3>
+            <div class="big">245</div>
+        </div>
+
+        <div class="dashboard-card">
+            <h3>Pengguna Aktif</h3>
+            <div class="big">120</div>
+        </div>
+
+        <div class="dashboard-card">
+            <h3>Kategori Buku</h3>
+            <div class="big">18</div>
+        </div>
+
+    </div>
+
 </div>
-
-<script type="module">
-    import { auth, onAuthStateChanged, signOut } from "./firebase.js";
-    
-    onAuthStateChanged(auth, (user) => {
-        if (!user) { window.location.href = "login.html"; return; }
-        
-        // 1. Logika Owner
-        const listOwner = ["achizzanfathirazka@gmail.com", "owner@gmail.com"];
-        const isOwner = listOwner.includes(user.email.trim().toLowerCase());
-        
-        // 2. Set Nama + Mahkota
-        const namaBersih = (user.displayName || "User").replace("👑", "").trim();
-        document.getElementById("usernameUser").innerText = isOwner ? namaBersih + " 👑" : namaBersih;
-        
-        // 3. Set Foto dari LocalStorage (Data dari profil.html)
-        const fotoLocal = localStorage.getItem('foto_' + user.uid);
-        if (fotoLocal) {
-            document.getElementById("userAvatar").src = fotoLocal;
-        } else if (user.photoURL) {
-            document.getElementById("userAvatar").src = user.photoURL;
-        }
-
-        // 4. Munculkan Menu Admin otomatis jika Owner
-        if (isOwner && !document.getElementById("menuAdmin")) {
-            const adminLink = document.createElement("a");
-            adminLink.href = "admin.html";
-            adminLink.id = "menuAdmin";
-            adminLink.innerHTML = "Panel Admin 🔐";
-            
-            const menuContainer = document.getElementById("menuContainer");
-            const logoutBtn = document.getElementById("logoutBtn");
-            menuContainer.insertBefore(adminLink, logoutBtn);
-        }
-    });
-
-    // Logout
-    document.getElementById("logoutBtn").addEventListener("click", (e) => {
-        e.preventDefault();
-        signOut(auth).then(() => { window.location.href = "login.html"; });
-    });
-</script>
-</body>
-</html>
