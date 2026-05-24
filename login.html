@@ -1,43 +1,112 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>Login</title>
+
 <link rel="stylesheet" href="style.css">
+
 </head>
 
 <body class="login-body">
 
 <div class="login-container">
 
-<div class="logo-section">
-<img src="https://www.smkn1suboh.sch.id/resources/images/logo.png">
-<h2>Perpus Digital</h2>
-<p>SMKN 1 Suboh</p>
+    <div class="logo-section">
+
+        <img src="https://www.smkn1suboh.sch.id/resources/images/logo.png">
+
+        <h2>Perpus Digital</h2>
+
+        <p>SMKN 1 Suboh</p>
+
+    </div>
+
+    <form id="loginForm">
+
+        <div class="form-group">
+
+            <input 
+            type="email"
+            id="emailInput"
+            placeholder="Masukkan Email">
+
+        </div>
+
+        <div class="form-group">
+
+            <input 
+            type="password"
+            id="passwordInput"
+            placeholder="Masukkan Password">
+
+        </div>
+
+        <button class="btn-login" type="submit">
+
+            Masuk
+
+        </button>
+
+    </form>
+
+    <!-- REGISTER -->
+    <div class="register-box">
+
+        <p>Belum punya akun?</p>
+
+        <a href="register.html">
+
+            Daftar Sekarang
+
+        </a>
+
+    </div>
+
 </div>
 
-<form>
+<script type="module">
 
-<div class="form-group">
-<input type="email" placeholder="Email">
-</div>
+import { auth } from "./firebase.js";
 
-<br>
+import { signInWithEmailAndPassword }
 
-<div class="form-group">
-<input type="password" placeholder="Password">
-</div>
+from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 
-<br>
+const loginForm = document.getElementById("loginForm");
 
-<button class="btn-login">
-Masuk
-</button>
+loginForm.addEventListener("submit", async(e)=>{
 
-</form>
+    e.preventDefault();
 
-</div>
+    const email =
+    document.getElementById("emailInput").value;
+
+    const password =
+    document.getElementById("passwordInput").value;
+
+    try{
+
+        await signInWithEmailAndPassword(
+            auth,
+            email,
+            password
+        );
+
+        window.location.href = "index.html";
+
+    }catch(error){
+
+        alert("Login gagal!");
+
+    }
+
+});
+
+</script>
 
 </body>
 </html>
